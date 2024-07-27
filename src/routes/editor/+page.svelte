@@ -41,11 +41,7 @@
 	</div>
 	{#if showPropEditor}
 		<div class="prop-editor">
-			<PropEditor
-				bind:this={propEditor}
-				on:keydown={handleKeyDown}
-				tagNames={['태그', '뭐가', '있을까']}
-			/>
+			<PropEditor bind:this={propEditor} on:keydown={handleKeyDown} />
 		</div>
 	{/if}
 </section>

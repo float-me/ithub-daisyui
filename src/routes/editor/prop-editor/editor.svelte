@@ -1,6 +1,6 @@
 <script lang="ts">
 	import PropTag from './prop-tag.svelte';
-	export let tagNames: string[];
+	import { current } from '../current-store';
 
 	let value: string;
 	let inputBind: HTMLInputElement;
@@ -9,14 +9,14 @@
 		if (event.key === ' ') {
 			event.preventDefault();
 			if (!value) return;
-			tagNames = [...tagNames, value];
+			$current.tags = [...$current.tags, value];
 			value = '';
 		}
 	}
 
 	function handleOnSelect(event: CustomEvent<{ index: number }>) {
-		tagNames.splice(event.detail.index, 1);
-		tagNames = tagNames;
+		$current.tags.splice(event.detail.index, 1);
+		$current.tags = $current.tags;
 		inputBind.focus();
 	}
 
@@ -26,7 +26,7 @@
 </script>
 
 <div class="container">
-	{#each tagNames as name, index}
+	{#each $current.tags as name, index}
 		<PropTag {name} {index} on:select={handleOnSelect} />
 	{/each}
 </div>
