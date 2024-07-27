@@ -79,5 +79,6 @@
 	value={fullWord}
 	spellcheck="false"
 	class="btn btn-accent"
+	id="word-editor-input"
 	style={inputStyle}
 />

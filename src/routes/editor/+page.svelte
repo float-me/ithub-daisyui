@@ -1,7 +1,7 @@
 <script lang="ts">
-	import WordEditor from './word-editor.svelte';
-	import PropEditor from './prop-editor.svelte';
-	import type { WordGraph } from '../../lib/graph';
+	import WordEditor from './word-editor/editor.svelte';
+	import PropEditor from './prop-editor/editor.svelte';
+	import type { WordGraph } from '$lib/graph';
 	import { page } from '$app/stores';
 
 	interface PageState {
@@ -16,6 +16,7 @@
 	let showPropEditor = false;
 
 	let wordEditor: WordEditor;
+	let propEditor: PropEditor;
 	function handleKeyDown(event: KeyboardEvent) {
 		if (event.key === 'g' && event.ctrlKey) {
 			event.preventDefault();
@@ -23,7 +24,14 @@
 			showPropEditor = !showPropEditor;
 			return;
 		}
-		wordEditor.handleKeyDown(event);
+		switch ((event.target as HTMLInputElement).id) {
+			case 'word-editor-input':
+				wordEditor.handleKeyDown(event);
+				break;
+			case 'prop-editor-input':
+				propEditor.handleKeyDown(event);
+				break;
+		}
 	}
 </script>
 
@@ -32,7 +40,13 @@
 		<WordEditor {wordGraph} {defaultStr} on:keydown={handleKeyDown} bind:this={wordEditor} />
 	</div>
 	{#if showPropEditor}
-		<div class="prop-editor"><PropEditor /></div>
+		<div class="prop-editor">
+			<PropEditor
+				bind:this={propEditor}
+				on:keydown={handleKeyDown}
+				tagNames={['태그', '뭐가', '있을까']}
+			/>
+		</div>
 	{/if}
 </section>
 

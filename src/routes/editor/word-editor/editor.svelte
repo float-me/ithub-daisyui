@@ -2,7 +2,7 @@
 	import WordTag from './word-tag.svelte';
 	import InputTag from './input-tag.svelte';
 	import { Word, WordNode } from '$lib/word';
-	import { WordGraph } from '../../lib/graph';
+	import { WordGraph } from '$lib/graph';
 
 	export let wordGraph: WordGraph;
 	export let defaultStr: string;
