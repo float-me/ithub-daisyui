@@ -2,10 +2,9 @@
 	import WordTag from './word-tag.svelte';
 	import InputTag from './input-tag.svelte';
 	import { Word, WordNode } from '$lib/word';
-	import { WordGraph } from '$lib/graph';
+	import { wordGraph } from '../../word-graph-store';
 	import { current } from '../current-store';
 
-	export let wordGraph: WordGraph;
 	export let defaultStr: string;
 
 	let defaultWord = new Word(defaultStr[0], defaultStr.slice(1), 0);
@@ -16,13 +15,16 @@
 
 	function handleCreate(event: CustomEvent<{}>) {
 		let newWord = inputTag.getWord();
-		if (!wordGraph.has(newWord.word) || $current.before.map((x) => x.word).includes(newWord.word)) {
+		if (
+			!$wordGraph.has(newWord.word) ||
+			$current.before.map((x) => x.word).includes(newWord.word)
+		) {
 			let fail = true;
 			if (newWord.length === 2) {
 				for (let [index, head] of newWord.heading.entries()) {
-					let succ = wordGraph.charMap.get(head)?.successors;
+					let succ = $wordGraph.charMap.get(head)?.successors;
 					if (!succ || !succ.has(newWord.last)) continue;
-					let outWords = wordGraph.charMap.get(head)?.outWords;
+					let outWords = $wordGraph.charMap.get(head)?.outWords;
 					if (!outWords) continue;
 					for (let word of outWords) {
 						if ($current.before.map((x) => x.word).includes(word)) continue;

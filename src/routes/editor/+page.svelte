@@ -1,16 +1,13 @@
 <script lang="ts">
 	import WordEditor from './word-editor/editor.svelte';
 	import PropEditor from './prop-editor/editor.svelte';
-	import type { WordGraph } from '$lib/graph';
 	import { page } from '$app/stores';
 
 	interface PageState {
-		wordGraph: WordGraph;
 		defaultStr: string;
 	}
 
 	$: state = ($page as unknown as { state: PageState }).state;
-	$: wordGraph = state.wordGraph;
 	$: defaultStr = state.defaultStr;
 
 	let showPropEditor = false;
@@ -37,7 +34,7 @@
 
 <section class="layout">
 	<div class="word-editor" style="width: {showPropEditor ? 70 : 100}%;">
-		<WordEditor {wordGraph} {defaultStr} on:keydown={handleKeyDown} bind:this={wordEditor} />
+		<WordEditor {defaultStr} on:keydown={handleKeyDown} bind:this={wordEditor} />
 	</div>
 	{#if showPropEditor}
 		<div class="prop-editor">

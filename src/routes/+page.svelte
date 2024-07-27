@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
+	import { wordGraph } from './word-graph-store';
 	import { WordGraph } from '$lib/graph';
 
 	async function fetchWordList(url: URL) {
@@ -18,17 +19,14 @@
 			)
 		);
 		let wordList = wordLists.reduce((a, b) => a.concat(b), []);
-		let wordGraph = new WordGraph(wordList);
 
-		return wordGraph;
+		return new WordGraph(wordList);
 	}
 
-	let wordGraph: WordGraph;
-
 	onMount(async () => {
-		wordGraph = await loadWordGraph();
+		$wordGraph = await loadWordGraph();
 		// After loading, navigate to the next page and pass the loaded data
-		goto('/default-setter', { state: { wordGraph } });
+		goto('/default-setter');
 	});
 </script>
 

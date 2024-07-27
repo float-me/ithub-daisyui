@@ -1,27 +1,19 @@
 <script lang="ts">
-	import type { WordGraph } from '../../lib/graph';
-	import { page } from '$app/stores';
+	import { wordGraph } from '../word-graph-store';
 	import { goto } from '$app/navigation';
-
-	interface PageState {
-		wordGraph: WordGraph;
-	}
-
-	let wordGraph: WordGraph;
-	$: wordGraph = ($page as unknown as { state: PageState }).state.wordGraph;
 
 	let defaultStr: string;
 	let value: string = '';
 	function handleKeyDown(event: KeyboardEvent) {
 		if (event.key === ' ') {
 			event.preventDefault();
-			if (!wordGraph.charMap.get(value[0])?.outWords.includes(value)) {
+			if (!$wordGraph.charMap.get(value[0])?.outWords.includes(value)) {
 				value = '';
 				return;
 			}
 
 			defaultStr = value;
-			goto('../editor', { state: { wordGraph, defaultStr } });
+			goto('../editor', { state: { defaultStr } });
 		}
 	}
 	function init(el: HTMLInputElement) {
